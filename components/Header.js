@@ -5,10 +5,28 @@ import {
   Text,
   View,
   Image,
+  Modal,
+  Button,
+  TouchableHighlight
 } from 'react-native';
 
 
 export default class Header extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      modalVisible: false,
+    }
+  }
+
+  openModal() {
+    this.setState({modalVisible:true});
+  }
+
+  closeModal() {
+    this.setState({modalVisible:false});
+  }
+
   render() {
     const {name, school} = this.props;
     return (
@@ -16,8 +34,12 @@ export default class Header extends Component {
         <View style = {styles.headerBG}>
           <View style={styles.header}>
               <View style = {styles.infobox}>
-                <Image style = {styles.edit} source = {require('../img/edit.png')} />
-                <Text style = {styles.name}> {name}</Text>
+
+                <TouchableHighlight style = {styles.edit} onPress={() => this.openModal()} underlayColor = 'gray' >
+                  <Image style = {styles.edit} source = {require('../img/edit.png')}/>
+                </TouchableHighlight>
+
+                <Text style = {styles.name} > {name}</Text>
                 <Text style = {styles.school}>{school}</Text>
               </View>
 
@@ -26,6 +48,26 @@ export default class Header extends Component {
               </View>
 
           </View>
+
+
+
+
+          <Modal
+              visible={this.state.modalVisible}
+              animationType={'slide'}
+              onRequestClose={() => this.closeModal()}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.innerContainer}>
+                <Text fontSize = {20} onPress={() => this.closeModal()}>
+                Back
+                </Text>
+              </View>
+            </View>
+          </Modal>
+
+
+
         </View>
     );
   }
